@@ -28,6 +28,12 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [host.replace('https://', '').replace('http://', '').split('/')[0] for host in os.environ.get('ALLOWED_HOSTS', '*').split(',')]
 
+CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS if host != '*']
+if '*' in ALLOWED_HOSTS:
+    # If ALLOWED_HOSTS is '*', we can't easily guess the domain for CSRF_TRUSTED_ORIGINS, 
+    # but for safety in production, explicit domains are better.
+    pass
+
 
 # Application definition
 # ... existing code ...
