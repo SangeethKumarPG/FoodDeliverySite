@@ -17,6 +17,3 @@ todo_app/
 django-test/
 populate_db.py
 create_superuser.py
-requirements.txt
-Dockerfile
-docker-entrypoint.sh
