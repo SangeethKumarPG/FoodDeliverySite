@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Category, MenuItem, Cart, CartItem, Order, OrderItem, Review
-from .forms import UserRegistrationForm, LoginForm, OrderForm, ReviewForm
+from .forms import UserRegistrationForm, LoginForm, OrderForm, ReviewForm, ContactForm
 
 def home(request):
     return render(request, 'home.html')
@@ -21,7 +21,16 @@ def about(request):
     return render(request, 'about.html')
 
 def contact(request):
-    return render(request, 'contact.html')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('contact')
+    else:
+        form = ContactForm()
+    return render(request, 'contact.html', {'form': form})
+
 
 def help_view(request):
     return render(request, 'help.html')

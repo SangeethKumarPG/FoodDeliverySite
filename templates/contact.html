@@ -1,83 +1,197 @@
 {% extends 'base.html' %}
 
-{% block title %}Contact Us | SavoRelle{% block extra_css %}
-.contact-container {
-max-width: 1000px;
-margin: 50px auto;
-padding: 0 20px;
-}
+{% block title %}Contact Us | SavoRelle{% endblock %}
 
-.cards {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-gap: 30px;
+{% block extra_css %}
+.contact-hero {
+background: linear-gradient(135deg, var(--olive), var(--hover-light));
+color: white;
+padding: 80px 20px;
+text-align: center;
+border-radius: 0 0 50px 50px;
 margin-bottom: 50px;
 }
 
-.card {
+.contact-hero h1 {
+font-family: 'Pacifico', cursive;
+font-size: 3.5rem;
+margin-bottom: 10px;
+}
+
+.contact-container {
+max-width: 1100px;
+margin: 0 auto 80px;
+padding: 0 20px;
+display: grid;
+grid-template-columns: 1fr 1.5fr;
+gap: 50px;
+}
+
+@media (max-width: 768px) {
+.contact-container {
+grid-template-columns: 1fr;
+}
+}
+
+.contact-info {
+display: flex;
+flex-direction: column;
+gap: 30px;
+}
+
+.info-card {
 background: white;
-border-radius: 18px;
-padding: 30px 20px;
-width: 220px;
-text-align: center;
+padding: 25px;
+border-radius: 20px;
 box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-transition: transform 0.3s;
+display: flex;
+align-items: center;
+gap: 20px;
+transition: transform 0.3s ease;
 }
 
-.card:hover { transform: translateY(-10px); }
+.info-card:hover {
+transform: translateX(10px);
+box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
 
-.card i {
-font-size: 2.5rem;
+.info-card i {
+font-size: 2rem;
 color: var(--olive);
-margin-bottom: 15px;
+background: #F0F4E8;
+padding: 15px;
+border-radius: 15px;
 }
 
-.card h3 { margin-bottom: 10px; color: var(--olive); }
-.card p { font-size: 0.9rem; color: #666; }
+.info-card .details h3 {
+font-size: 1.2rem;
+margin-bottom: 5px;
+color: var(--olive);
+}
 
-.form-container {
-margin-top: 50px;
+.info-card .details p {
+color: #666;
+font-size: 0.95rem;
+}
+
+.contact-form-wrapper {
+background: white;
+padding: 40px;
+border-radius: 30px;
+box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+}
+
+.contact-form-wrapper h2 {
+font-family: 'Rubik', sans-serif;
+font-size: 2rem;
+margin-bottom: 30px;
+color: var(--text-dark);
+}
+
+.form-group {
+margin-bottom: 25px;
+}
+
+.form-group label {
+font-weight: 600;
+margin-bottom: 10px;
+display: block;
+color: #444;
+}
+
+.form-group input, .form-group textarea {
+width: 100%;
+padding: 15px;
+border: 2px solid #eee;
+border-radius: 15px;
+transition: all 0.3s ease;
+font-size: 1rem;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+border-color: var(--olive);
+outline: none;
+box-shadow: 0 0 10px rgba(107, 142, 35, 0.1);
+}
+
+.submit-btn {
+background: var(--olive);
+color: white;
+border: none;
+padding: 15px 40px;
+border-radius: 15px;
+font-size: 1.1rem;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.3s ease;
+width: 100%;
+box-shadow: 0 10px 20px rgba(107, 142, 35, 0.2);
+}
+
+.submit-btn:hover {
+background: var(--text-dark);
+transform: translateY(-3px);
+box-shadow: 0 15px 30px rgba(0,0,0,0.2);
 }
 {% endblock %}
 
 {% block content %}
+<section class="contact-hero">
+    <h1>Get in Touch</h1>
+    <p>We'd love to hear from you. Reach out to us for any queries!</p>
+</section>
+
 <div class="contact-container">
-    <div class="cards">
-        <div class="card">
+    <div class="contact-info">
+        <div class="info-card">
             <i class="fas fa-phone-alt"></i>
-            <h3>Phone</h3>
-            <p>9988776655</p>
+            <div class="details">
+                <h3>Call Us</h3>
+                <p>+91 9988776655</p>
+                <p>Mon - Sun: 10:00 AM - 11:00 PM</p>
+            </div>
         </div>
-        <div class="card">
+
+        <div class="info-card">
             <i class="fas fa-envelope"></i>
-            <h3>Email</h3>
-            <p>contact@savorelle.com</p>
+            <div class="details">
+                <h3>Email Us</h3>
+                <p>contact@savorelle.com</p>
+                <p>support@savorelle.com</p>
+            </div>
         </div>
-        <div class="card">
+
+        <div class="info-card">
             <i class="fas fa-map-marker-alt"></i>
-            <h3>Office</h3>
-            <p>Cheraman, Kodungallur, 680664</p>
+            <div class="details">
+                <h3>Visit Us</h3>
+                <p>Cheraman, Kodungallur</p>
+                <p>Thrissur, Kerala - 680664</p>
+            </div>
         </div>
     </div>
 
-    <div class="form-container" style="max-width: 700px;">
-        <h2>Send us a message</h2>
+    <div class="contact-form-wrapper">
+        <h2>Send us a Message</h2>
         <form method="post">
             {% csrf_token %}
+            {% for field in form %}
             <div class="form-group">
-                <input type="text" name="name" placeholder="Your Name" required>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="errorlist">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
             </div>
-            <div class="form-group">
-                <input type="email" name="email" placeholder="Your Email" required>
-            </div>
-            <div class="form-group">
-                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-            </div>
-            <button type="submit" class="cta-btn" style="width: 100%;">Send Message</button>
+            {% endfor %}
+            <button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane"
+                    style="margin-left: 10px;"></i></button>
         </form>
     </div>
 </div>
+
 <!-- Load Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 {% endblock %}

@@ -1,6 +1,13 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Category, MenuItem, Cart, CartItem, Order, OrderItem, Review
+from .models import Category, MenuItem, Cart, CartItem, Order, OrderItem, Review, ContactMessage
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'created_at')
+    readonly_fields = ('created_at',)
+    search_fields = ('name', 'email', 'message')
+
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
