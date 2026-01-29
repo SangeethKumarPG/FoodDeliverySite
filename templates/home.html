@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | SavoRelle{% endblock %}
+
+{% load static %}
+{% block extra_css %}
+.hero {
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 70vh;
+background-image:
+url("{% static 'images/hero_bg.png' %}");
+background-size: cover;
+background-position: center;
+color: var(--white);
+text-align: center;
+overflow: hidden;
+}
+
+.hero::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(107, 142, 35, 0.3);
+z-index: 0;
+}
+
+.hero-text {
+position: relative;
+z-index: 1;
+max-width: 650px;
+animation: fadeIn 1.5s ease;
+}
+
+.hero-text h2 {
+font-size: 4rem;
+font-family: 'Pacifico', cursive;
+letter-spacing: 2px;
+color: #fff;
+text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+}
+
+.hero-text h4 {
+font-weight: 600;
+font-size: 1.8rem;
+margin-bottom: 20px;
+color: #fff;
+text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+}
+
+.featured {
+text-align: center;
+padding: 60px 20px;
+}
+
+.featured h3 {
+font-size: 2.5rem;
+font-family: 'Pacifico', cursive;
+color: var(--olive);
+margin-bottom: 40px;
+}
+
+.food-items {
+display: flex;
+justify-content: center;
+gap: 30px;
+flex-wrap: wrap;
+}
+
+.food-card {
+background: var(--white);
+border-radius: 12px;
+width: 250px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+overflow: hidden;
+transition: transform 0.3s ease;
+}
+
+.food-card:hover {
+transform: translateY(-8px);
+}
+
+.food-card img {
+width: 100%;
+height: 160px;
+object-fit: cover;
+}
+
+.food-card h4 {
+padding: 15px;
+font-size: 1.2rem;
+color: var(--text-dark);
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <h2>SavoRelle</h2>
+        <h4>A place where food is savored with elegance</h4>
+        <a href="{% url 'menu' %}" class="cta-btn">Explore Menu</a>
+    </div>
+</section>
+
+<section class="featured">
+    <h3>Special Offers</h3>
+    <div class="food-items">
+        <div class="food-card">
+            <img src="{% static 'images/special_offers/pizza.png' %}" alt="Pizza">
+            <h4>Cheese Burst Pizza</h4>
+        </div>
+        <div class="food-card">
+            <img src="{% static 'images/special_offers/burger.png' %}" alt="Burger">
+            <h4>Classic Chicken Burger</h4>
+        </div>
+        <div class="food-card">
+            <img src="{% static 'images/special_offers/pasta.png' %}" alt="Pasta">
+            <h4>Spicy Alfredo Pasta</h4>
+        </div>
+    </div>
+</section>{% endblock %}

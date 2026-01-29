@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Reviews | SavoRelle{% endblock %}
+
+{% block extra_css %}
+.container {
+max-width: 800px;
+margin: 50px auto;
+padding: 0 20px;
+}
+
+h2 {
+text-align: center;
+color: var(--olive);
+font-family: 'Pacifico', cursive;
+margin-bottom: 40px;
+}
+
+.review-card {
+background: white;
+padding: 30px;
+border-radius: 15px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+margin-bottom: 20px;
+}
+
+.review-header {
+display: flex;
+justify-content: space-between;
+margin-bottom: 15px;
+font-weight: 700;
+color: var(--olive);
+}
+
+.rating {
+color: #f1c40f;
+}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Customer Reviews</h2>
+
+    {% if user.is_authenticated %}
+    <div class="review-card">
+        <h3>Submit a Review</h3>
+        <form action="{% url 'submit_review' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="cta-btn">Submit Review</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="reviews-list">
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-header">
+                <span>{{ review.user.username }}</span>
+                <span class="rating">
+                    {% for i in "12345" %}
+                    {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %} {% endfor %} </span>
+            </div>
+            <p>{{ review.comment }}</p>
+            <small style="color: #666;">{{ review.created_at|date:"M d, Y" }}</small>
+        </div>
+        {% empty %}
+        <p style="text-align: center;">No reviews yet. Be the first to review!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

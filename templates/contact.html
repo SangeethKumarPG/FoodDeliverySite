@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us | SavoRelle{% block extra_css %}
+.contact-container {
+max-width: 1000px;
+margin: 50px auto;
+padding: 0 20px;
+}
+
+.cards {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 30px;
+margin-bottom: 50px;
+}
+
+.card {
+background: white;
+border-radius: 18px;
+padding: 30px 20px;
+width: 220px;
+text-align: center;
+box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+transition: transform 0.3s;
+}
+
+.card:hover { transform: translateY(-10px); }
+
+.card i {
+font-size: 2.5rem;
+color: var(--olive);
+margin-bottom: 15px;
+}
+
+.card h3 { margin-bottom: 10px; color: var(--olive); }
+.card p { font-size: 0.9rem; color: #666; }
+
+.form-container {
+margin-top: 50px;
+}
+{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <div class="cards">
+        <div class="card">
+            <i class="fas fa-phone-alt"></i>
+            <h3>Phone</h3>
+            <p>9988776655</p>
+        </div>
+        <div class="card">
+            <i class="fas fa-envelope"></i>
+            <h3>Email</h3>
+            <p>contact@savorelle.com</p>
+        </div>
+        <div class="card">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Office</h3>
+            <p>Cheraman, Kodungallur, 680664</p>
+        </div>
+    </div>
+
+    <div class="form-container" style="max-width: 700px;">
+        <h2>Send us a message</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="name" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+                <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            </div>
+            <button type="submit" class="cta-btn" style="width: 100%;">Send Message</button>
+        </form>
+    </div>
+</div>
+<!-- Load Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}

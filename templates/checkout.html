@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout | SavoRelle{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    #map {
+        height: 350px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+    }
+
+    .map-instruction {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="form-container" style="max-width: 800px;">
+    <h2>Checkout</h2>
+    <form method="post" id="checkout-form">
+        {% csrf_token %}
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <div>
+                {% for field in form %}
+                {% if not field.is_hidden %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+                {% else %}
+                {{ field }}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div>
+                <p class="map-instruction">Drop a pin to select your delivery location:</p>
+                <div id="map"></div>
+                <p id="location-status" style="font-size: 0.8rem; color: var(--olive); margin-top: 5px;">No location
+                    selected</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center;">
+            <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 20px;">Total Amount: ${{ total_amount }}</p>
+            <button type="submit" class="cta-btn" style="width: 100%;">Place Order</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize map (default to a central location, e.g., Kodungallur from previous context)
+        var map = L.map('map').setView([10.2181, 76.1944], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var marker;
+
+        function onMapClick(e) {
+            if (marker) {
+                marker.setLatLng(e.latlng);
+            } else {
+                marker = L.marker(e.latlng, { draggable: true }).addTo(map);
+                marker.on('dragend', function (event) {
+                    var m = event.target;
+                    updateCoordinates(m.getLatLng());
+                });
+            }
+            updateCoordinates(e.latlng);
+        }
+
+        function updateCoordinates(latlng) {
+            document.getElementById('id_latitude').value = latlng.lat.toFixed(6);
+            document.getElementById('id_longitude').value = latlng.lng.toFixed(6);
+            document.getElementById('location-status').textContent = "📍 Location Fixed: " + latlng.lat.toFixed(4) + ", " + latlng.lng.toFixed(4);
+        }
+
+        map.on('click', onMapClick);
+
+        // Try to get user's current location
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                map.setView([lat, lng], 15);
+            });
+        }
+    });
+</script>
+{% endblock %}

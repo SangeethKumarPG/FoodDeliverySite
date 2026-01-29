@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }} | SavoRelle{% endblock %}
+
+{% block extra_css %}
+.container {
+max-width: 1200px;
+margin: 50px auto;
+padding: 0 20px;
+}
+
+h2 {
+text-align: center;
+color: var(--olive);
+font-size: 3rem;
+font-family: 'Pacifico', cursive;
+margin-bottom: 40px;
+}
+
+.items-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 30px;
+}
+
+.item-card {
+background: white;
+border-radius: 20px;
+overflow: hidden;
+box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+transition: transform 0.3s ease;
+}
+
+.item-card:hover {
+transform: translateY(-5px);
+}
+
+.item-card img {
+width: 100%;
+height: 200px;
+object-fit: cover;
+}
+
+.item-info {
+padding: 20px;
+}
+
+.item-name {
+font-size: 1.4rem;
+font-weight: 700;
+color: var(--text-dark);
+margin-bottom: 10px;
+}
+
+.item-price {
+font-size: 1.2rem;
+font-weight: 600;
+color: var(--olive);
+margin-bottom: 10px;
+}
+
+.item-desc {
+font-size: 0.9rem;
+color: #666;
+margin-bottom: 20px;
+height: 40px;
+overflow: hidden;
+}
+
+.item-actions {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ category.name }}</h2>
+    <div class="items-grid">
+        {% for item in items %}
+        <div class="item-card">
+            <img src="{{ item.image }}" alt="{{ item.name }}">
+            <div class="item-info">
+                <div class="item-name">{{ item.name }}</div>
+                <div class="item-price">${{ item.price }}</div>
+                <div class="item-desc">{{ item.description }}</div>
+                <div class="item-actions">
+                    <form action="{% url 'add_to_cart' item.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="add-cart-btn">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align: center; grid-column: 1/-1;">No items found in this category.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

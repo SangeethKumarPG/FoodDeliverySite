@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Success | SavoRelle{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; margin-top: 100px;">
+    <h2 style="color: var(--olive); font-family: 'Pacifico', cursive; font-size: 3rem;">Thank You!</h2>
+    <p style="font-size: 1.2rem; margin-bottom: 30px;">Your order has been placed successfully. Our chef is preparing
+        your meal with elegance.</p>
+    <a href="{% url 'home' %}" class="cta-btn">Back to Home</a>
+    <a href="{% url 'order_history' %}" class="cta-btn" style="background-color: #666; margin-left: 10px;">View My
+        Orders</a>
+</div>
+{% endblock %}

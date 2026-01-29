@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Help | SavoRelle{% endblock %}
+
+{% block extra_css %}
+.help-container {
+max-width: 1000px;
+margin: 50px auto;
+padding: 0 20px;
+}
+
+.help-cards {
+display: flex;
+gap: 30px;
+flex-wrap: wrap;
+justify-content: center;
+margin-bottom: 50px;
+}
+
+.help-card {
+background: white;
+border-radius: 18px;
+padding: 30px 20px;
+width: 200px;
+text-align: center;
+box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+transition: all 0.3s;
+}
+
+.help-card:hover {
+transform: translateY(-8px);
+background: #f6ffe2;
+}
+
+.help-card i {
+font-size: 2.5rem;
+color: var(--olive);
+margin-bottom: 15px;
+}
+
+.help-card h3 { color: var(--olive); font-size: 1.1rem; margin-bottom: 10px; }
+.help-card p { font-size: 0.85rem; color: #666; }
+
+.faq-section {
+background: white;
+border-radius: 20px;
+padding: 40px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+.faq-section h2 { text-align: center; color: var(--olive); margin-bottom: 30px; font-family: 'Pacifico', cursive; }
+
+.accordion-item {
+margin-bottom: 15px;
+border: 1px solid #eee;
+border-radius: 10px;
+overflow: hidden;
+}
+
+.accordion-title {
+width: 100%;
+padding: 15px 20px;
+text-align: left;
+background: none;
+border: none;
+font-weight: 600;
+color: var(--olive);
+cursor: pointer;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.accordion-content {
+padding: 0 20px 15px;
+display: none;
+font-size: 0.95rem;
+color: #555;
+}
+{% endblock %}
+
+{% block content %}
+<div class="help-container">
+    <div class="help-cards">
+        <div class="help-card">
+            <i class="fas fa-utensils"></i>
+            <h3>Ordering</h3>
+            <p>Learn how to order and view menu options.</p>
+        </div>
+        <div class="help-card">
+            <i class="fas fa-truck"></i>
+            <h3>Delivery</h3>
+            <p>Track orders and view delivery times.</p>
+        </div>
+        <div class="help-card">
+            <i class="fas fa-user-shield"></i>
+            <h3>Security</h3>
+            <p>Keep your account safe and manage data.</p>
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="accordion-item">
+            <button class="accordion-title" onclick="toggleAccordion(this)">
+                How do I place or track my order? <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+                Place your order online and track it through your account or via the SMS link we send.
+            </div>
+        </div>
+        <div class="accordion-item">
+            <button class="accordion-title" onclick="toggleAccordion(this)">
+                Can I change or cancel an order? <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+                Orders can be modified or canceled within 15 minutes of placement.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleAccordion(elem) {
+        const content = elem.nextElementSibling;
+        const isVisible = content.style.display === 'block';
+
+        // Close all others
+        document.querySelectorAll('.accordion-content').forEach(c => c.style.display = 'none');
+
+        content.style.display = isVisible ? 'none' : 'block';
+    }
+</script>
+<!-- Load Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}

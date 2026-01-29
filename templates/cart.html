@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Cart | SavoRelle{% endblock %}
+
+{% block extra_css %}
+.container {
+max-width: 900px;
+margin: 50px auto;
+background: white;
+padding: 40px;
+border-radius: 20px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+h2 {
+text-align: center;
+color: var(--olive);
+font-size: 2.5rem;
+font-family: 'Pacifico', cursive;
+margin-bottom: 30px;
+}
+
+.cart-table {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 30px;
+}
+
+.cart-table th, .cart-table td {
+padding: 15px;
+text-align: left;
+border-bottom: 1px solid #eee;
+}
+
+.cart-table th {
+color: #666;
+font-weight: 600;
+}
+
+.summary {
+text-align: right;
+font-size: 1.2rem;
+font-weight: 700;
+margin-bottom: 30px;
+}
+
+.cart-actions {
+display: flex;
+justify-content: space-between;
+}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Your Cart</h2>
+    {% if cart_items %}
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.item.name }}</td>
+                <td>${{ item.item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.total_price }}</td>
+                <td>
+                    <form action="{% url 'remove_from_cart' item.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit"
+                            style="background: none; border: none; color: red; cursor: pointer;">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="summary">
+        Total: ${{ total_amount }}
+    </div>
+    <div class="cart-actions">
+        <a href="{% url 'menu' %}" class="cta-btn" style="background-color: #666;">Continue Shopping</a>
+        <a href="{% url 'checkout' %}" class="cta-btn">Proceed to Checkout</a>
+    </div>
+    {% else %}
+    <p style="text-align: center;">Your cart is empty.</p>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'menu' %}" class="cta-btn">Browse Menu</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

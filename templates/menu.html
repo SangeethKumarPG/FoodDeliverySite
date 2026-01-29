@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Menu | SavoRelle{% endblock %}
+
+{% block extra_css %}
+.container {
+max-width: 1200px;
+margin: 50px auto;
+background: rgba(255, 255, 255, 0.9);
+border-radius: 20px;
+padding: 40px;
+box-shadow: 0 15px 40px rgba(85, 107, 47, 0.1);
+}
+
+h2 {
+text-align: center;
+color: var(--olive);
+font-size: 3rem;
+font-family: 'Pacifico', cursive;
+margin-bottom: 40px;
+}
+
+.menu-list {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 35px;
+}
+
+.menu-item {
+background: white;
+border-radius: 18px;
+width: 280px;
+padding: 20px;
+text-align: center;
+transition: all 0.4s ease;
+box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+
+.menu-item:hover {
+transform: translateY(-10px);
+box-shadow: 0 15px 35px rgba(107,142,35,0.2);
+}
+
+.menu-item img {
+width: 100%;
+height: 180px;
+border-radius: 12px;
+margin-bottom: 15px;
+object-fit: cover;
+}
+
+.dish-name {
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--olive);
+margin-bottom: 5px;
+}
+
+.dish-desc {
+font-size: 0.9rem;
+color: #666;
+margin-bottom: 20px;
+}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Our Categories</h2>
+    <div class="menu-list">
+        {% for category in categories %}
+        <div class="menu-item">
+            {% if category.image %}
+            <img src="{{ category.image }}" alt="{{ category.name }}">
+            {% else %}
+            <img src="https://via.placeholder.com/280x180?text={{ category.name }}" alt="{{ category.name }}">
+            {% endif %}
+            <div class="dish-name">{{ category.name|upper }}</div>
+            <div class="dish-desc">Explore our delicious {{ category.name|lower }} selection.</div>
+            <a href="{% url 'category_detail' category.id %}" class="add-cart-btn">EXPLORE</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
